@@ -5,7 +5,7 @@
 ## 🚀 What We Offer
 
 - **Comics**: Science-inspired stories that bring space concepts to life through visual narratives.
-- **Animations & Videos**: Bite-sized explainers and cinematic journeys through space.
+- **Animations & Videos**: Bite-sized explainers and cinematic journeys through space.(in progress)
 - **3D Solar System**: Interactive models to explore planets, moons, and more.
 - **Cosmic Calendar**: Stay updated on upcoming celestial events like meteor showers, eclipses, and planetary alignments.
 - **Space Weather**: Learn how solar flares, geomagnetic storms, and other cosmic phenomena affect life on Earth.
