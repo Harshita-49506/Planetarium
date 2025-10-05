@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarissa's Adventure - Planetarium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Bangers&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --theme-color: #8e44ad;
+            --theme-glow: rgba(142, 68, 173, 0.5);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            background-color: #000;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: rgba(18, 18, 30, 0.7);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .logo {
+            font-size: 2.2em;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--theme-color), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            transition: background 0.5s ease;
+        }
+
+        .login-signup {
+            color: #fff;
+            text-decoration: none;
+            background-color: rgba(83, 83, 83, 0.5);
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding-bottom: 5px;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--theme-color);
+            transition: width 0.3s ease-out, background-color 0.5s ease;
+        }
+
+        nav ul li a:hover {
+            color: #fff;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        main {
+            padding-top: 150px;
+            padding-bottom: 40px;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .comic-panel {
+            background-color: rgba(18, 18, 30, 0.85);
+            border-radius: 10px;
+            border: 1px solid var(--theme-color);
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+
+        .comic-panel img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .comic-panel h2 {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5em;
+            text-align: center;
+            color: var(--theme-color);
+            margin: 0 0 10px;
+        }
+
+        .comic-panel .subtitle {
+            text-align: center;
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .dialogue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .dialogue-box {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid var(--theme-color);
+        }
+
+        .dialogue-box strong {
+            color: #d8b4fe;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .narrative-text {
+            font-style: italic;
+            color: #b39ddb;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .to-be-continued {
+            font-family: 'Bangers', cursive;
+            font-size: 2em;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+
+        footer {
+            width: 100%;
+            background: rgba(18, 18, 30, 0.7);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 30px;
+            margin-top: 40px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-column h3 {
+            margin-top: 0;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        .footer-column a {
+            color: #bbb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="header-top">
+                <h1 class="logo">Planetarium</h1>
+                <a href="/login.html" class="login-signup">Login/Sign up</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="clarissa-comic.html">Clarissa</a></li>
+                    <li><a href="solar-system.html">Our Solar System</a></li>
+                    <li><a href="space-weather.html">Space Weather</a></li>
+                    <li><a href="space-events.html">Events</a></li>
+                    <li><a href="#">Numbers</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="settings.html">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-container">
+            <div class="comic-panel">
+                <h2>Clarissa</h2>
+                <p class="subtitle">An adventure from the sun to the earth</p>
+            </div>
+
+            <div class="comic-panel">
+                <img src="https://i.imgur.com/vA1y4hG.jpeg" alt="A view of a starry night sky from a window.">
+                <p class="narrative-text">Lisa and her Love for Stars...</p>
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Mom:</strong> Lisa dinner is ready, come and eat.</div>
+                    <div class="dialogue-box"><strong>Lisa:</strong> Yes mom comin just a second.</div>
+                    <div class="dialogue-box"><strong>Mom:</strong> Lisa food will get cold</div>
+                </div>
+                <p class="narrative-text" style="margin-top: 20px;">She glances back one last time. Oh how she loved
+                    those stars.</p>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Dad:</strong> So, how is school going Lisa?</div>
+                    <div class="dialogue-box"><strong>Lisa:</strong> It's going fine. The school is off for a few days
+                        due to snow.</div>
+                    <div class="dialogue-box"><strong>Dad:</strong> Oh I see, how are your science classes? What is the
+                        current topic you are learning?</div>
+                    <div class="dialogue-box"><strong>Lisa:</strong> They are going good. We are learning about the
+                        space specially the sun.</div>
+                    <div class="dialogue-box"><strong>Dad:</strong> That's Great!</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <img src="https://i.imgur.com/G5g2oA8.jpeg" alt="Lisa in bed, looking out the window at the night sky.">
+                <p class="narrative-text">Lisa looks out the window and gets lost in her thoughts as her lil eyes
+                    flutter shut.</p>
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Father:</strong> important meeting tomorrow.... Have to leave
+                        early...</div>
+                    <div class="dialogue-box"><strong>Mother:</strong> Alright, I'll leave her breakfast on the table...
+                    </div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <h2>Birth of Clary and her exploration with Bea</h2>
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Bea:</strong> Hey, there, little one... I am you, but older. Don't
+                        be scared. I won't harm you. What's your name?</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> Wh.. Who a.. are you??</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> I don't know. What's yours? Who am I? Who are you?
+                        And where are we?</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Clary:</strong> Oh ok, but what's CME?? and how long have you been
+                        here??</div>
+                    <div class="dialogue-box"><strong>Bea:</strong> Oh well, I am Bea. I am just like you; we are the
+                        CMEs. We are at a star whose name is Sun. It's the star around which all the planets revolve in
+                        this Solar System. CME is short for Coronal Mass Ejection. When the Sun's magnetic field gets
+                        tangled, it snaps its two ends to reconnect. This releases an enormous amount of energy,
+                        ejecting plasma and magnetic fields into space as a CME.</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <p class="narrative-text">So, basically, the Sun is made of hydrogen and helium particles. At the very
+                    core of the Sun, a nuclear reaction takes place in which two hydrogen particles fuse to make helium.
+                    Because of this, the temperature gets so high, and we have so many charged particles. All of this
+                    together results in the 4th stage of matter, which is plasma. Due to this plasma, a magnetic field
+                    is formed around the Sun. When this magnetic field gets tangled and snaps to get itself back in
+                    order, a massive burst of solar plasma and magnetic field from the Sun's outer atmosphere, called
+                    the corona, happens, which results in the creation of us, Coronal Mass Ejections!</p>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Clary:</strong> So I am like a burst of energy made from the Sun!
+                    </div>
+                    <div class="dialogue-box"><strong>Bea:</strong> Yes, you are a plasma cloud which is full of energy.
+                        Oh, how about we name you Clary?</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> That sounds great! You look quite big, how long
+                        have you been here?</div>
+                    <div class="dialogue-box"><strong>Bea:</strong> I came a couple of days before you. You will also
+                        increase in size with time. I am just waiting for the solar wind to drift me off from here
+                        towards the outer universe or some other planets. The Sun has been quite cold for the past few
+                        hours. And the solar storm I was born from didn't have enough energy to drift me off along with
+                        my friends.</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> What is that??</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <p class="narrative-text">A solar storm is a sudden explosion of particles, energy, magnetic fields, and
+                    material blasted into the solar system by the Sun. The Sun creates a tangled mess of magnetic fields
+                    which when snaps and reconnects releases large amounts of energy. These powerful eruptions can
+                    generate a bright flash of light called a solar flare, a radiation storm, or an enormous cloud of
+                    solar material, called a coronal mass ejection, that is US.</p>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Bea:</strong> Looks like there is going to be another Solar Storm.
+                        Clary hold my hand don't be scared okay??</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Clary:</strong> bea.. bea.. open your eyes please!! wake up</div>
+                    <div class="dialogue-box"><strong>Bea:</strong> cla.. clary</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> bea yes, it's me. Are you ok??</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Bea:</strong> ya i am fine. Are you alright??</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> I am alright. Where are we??</div>
+                    <div class="dialogue-box"><strong>Bea:</strong> looks like we are somewhere near venus.</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> Venus?? and what is that rock over there??</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Bea:</strong> Venus is the second planet from sun and that rock is
+                        Earth third planet from sun.</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> oh well looks like we are gonna collide into it.
+                    </div>
+                    <div class="dialogue-box"><strong>Bea:</strong> well everything which has come to life has to leave
+                        one day.</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Clary:</strong> What are you thinking ??</div>
+                    <div class="dialogue-box"><strong>Bea:</strong> What is going to happen next ??</div>
+                    <div class="dialogue-box"><strong>Clary:</strong> Well we both have enough energy to reach Earth. We
+                        are going to go there.</div>
+                    <div class="dialogue-box"><strong>Bea:</strong> I don't know, I just don't feel well.</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <div class="dialogue-grid">
+                    <div class="dialogue-box"><strong>Clary:</strong> is that so ??</div>
+                    <div class="dialogue-box"><strong>Bea:</strong> Yes Clary. Earth's magnetic field works in a similar
+                        way to the Sun's - they're both made by moving electric charges inside. But the Sun is extremely
+                        hot, while Earth's surface is much cooler which makes it safer for life to exist. Clary, it will
+                        hurt a lil. When we collide but then everything will better.</div>
+                </div>
+            </div>
+
+            <div class="comic-panel">
+                <p class="narrative-text" style="font-weight: bold; font-style: normal; text-align: left;">
+                    The Satellites ACE & WIND have detected CMEs coming towards the earth. Their speed looks really
+                    fast. Issue warning for blackouts at minimum 12 hours from now. We might see some beautiful Auroras
+                    tonight.
+                    <br><br>
+                    IMPACT: 12:00:00
+                    <br>
+                    WARNING: GEOMAGNETIC STORM DETECTED
+                </p>
+            </div>
+
+            <div class="comic-panel">
+                <img src="https://i.imgur.com/8xJz9kM.jpeg"
+                    alt="Bea and Clary as glowing energy beings entering Earth's atmosphere.">
+                <p class="narrative-text">
+                    As they get near to the earth. The charged particles in their cloud started to pour into the
+                    magnetosphere, The magnetic field of Earth. As the reaction started the magnetosphere started
+                    compressing, and shaking, which triggered the geomagnetic storm. Charged particles funnel down
+                    Earth's magnetic field lines toward the poles. They collide with atmospheric gases, creating
+                    auroras- bright, colorful lights in the sky, usually near the Arctic and Antarctic. As the sky
+                    glowed with green, blue, and pink lights, Bea and Clary's charged particles danced together in the
+                    air-safe again, happy, and hopping with joy. Lisa woke up as the light from Clary, Bea, and
+                    countless other CME particles touched her face. She smiled at the sky, eyes half-asleep, admiring
+                    the glow as if it were all just a dream.
+                </p>
+            </div>
+
+            <div class="comic-panel">
+                <p class="to-be-continued">To Be Continued...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Connect with Us</h3><a href="mailto:contact@planetarium.space">contact@planetarium.space</a><a
+                    href="#">Address</a><br><a href="#" target="_blank">Starship Twitter</a><a href="#"
+                    target="_blank">Cosmos Instagram</a>
+            </div>
+            <div class="footer-column">
+                <h3>Galaxy News</h3>
+                <p style="font-size: 0.9em; color: #ccc; margin: 0 0 10px;">Get the latest cosmic updates delivered to
+                    your inbox!</p><input type="text" placeholder="Enter your name"><input type="email"
+                    placeholder="Enter your e-mail address"><button class="subscribe-button">Subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="theme-loader.js"></script>
+</body>
+
+</html>
