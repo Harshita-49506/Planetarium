@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up - Planetarium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="Planetarium.png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Bangers&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-color: #8e44ad;
+            --theme-glow: rgba(142, 68, 173, 0.5);
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Roboto', sans-serif; 
+            color: white; 
+            background-color: #000;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: rgba(18, 18, 30, 0.7);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0 20px;
+        }
+
+        .header-container { max-width: 1200px; margin: 0 auto; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+        .logo { font-size: 2.2em; font-weight: 700; background: linear-gradient(45deg, var(--theme-color), #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; transition: background 0.5s ease; }
+        .login-signup { color: #fff; text-decoration: none; background-color: rgba(83, 83, 83, 0.5); padding: 10px 18px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2); }
+        nav ul { list-style: none; padding: 0; margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 25px; }
+        nav ul li a { color: #e0e0e0; text-decoration: none; font-size: 1.1em; padding-bottom: 5px; position: relative; }
+        nav ul li a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background-color: var(--theme-color); transition: width 0.3s ease-out, background-color 0.5s ease; }
+        nav ul li a:hover { color: #fff; }
+        nav ul li a:hover::after { width: 100%; }
+
+        main { 
+            padding-top: 150px; 
+            padding-bottom: 40px; 
+            display: flex;
+            align-items: center;
+            min-height: calc(100vh - 190px); /* Full height minus header */
+        }
+        .main-container { 
+            max-width: 450px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            width: 100%;
+        }
+        
+        .form-container {
+            background-color: rgba(18, 18, 30, 0.85);
+            border-radius: 10px;
+            border: 1px solid var(--theme-color);
+            padding: 40px;
+            box-shadow: 0 0 25px var(--theme-glow);
+        }
+        .form-container h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 3em;
+            text-align: center;
+            color: var(--theme-color);
+            text-shadow: 2px 2px 0 #000;
+            margin: 0 0 30px;
+        }
+
+        .form-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 15px;
+            color: #e0e0e0;
+            box-sizing: border-box; 
+            font-family: 'Roboto', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--theme-color);
+        }
+        
+        #signup-fields { 
+            display: none; 
+            flex-direction: column;
+            gap: 20px;
+        }
+        .signup-mode #signup-fields { display: flex; }
+        .signup-mode #login-title { display: none; }
+        .login-mode #signup-title { display: none; }
+        .login-mode #signup-toggle { display: block; }
+        .login-mode #login-toggle { display: none; }
+        .signup-mode #signup-toggle { display: none; }
+        .signup-mode #login-toggle { display: block; }
+        
+        .form-button {
+            padding: 15px;
+            margin-top: 10px;
+            background-color: var(--theme-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: filter 0.3s;
+        }
+        .form-button:hover {
+            filter: brightness(1.2);
+        }
+        
+        .toggle-form {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        .toggle-form a {
+            color: var(--theme-color);
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+        
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
+        .modal-content { background-color: #1e1e1e; padding: 30px; border: 1px solid var(--theme-color); width: 90%; max-width: 400px; border-radius: 10px; text-align: center; position: relative; box-shadow: 0 0 20px var(--theme-glow); }
+        .modal-content h2 { margin-top: 0; color: var(--theme-color); }
+        .close-button { color: #aaa; position: absolute; top: 10px; right: 20px; font-size: 28px; font-weight: bold; cursor: pointer; }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="header-top">
+                <img src="Planetarium.png" alt="Planetarium Logo" width=100>
+                <h1 class="logo">Planetarium</h1>
+                <a href="/login.html" class="login-signup">Login/Sign up</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="clarissa-comic.html">Clarissa</a></li>
+                    <li><a href="Our Solar System.html" target="_break">Our Solar System</a></li>
+                    <li><a href="Space weather.html">Space Weather</a></li>
+                    <li><a href="Cosmic Calender.html">Cosmic Calendar</a></li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a href="settings.html">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-container">
+            <div id="form-wrapper" class="form-container login-mode">
+                <h1 id="login-title">Welcome Back!</h1>
+                <h1 id="signup-title">Join the Adventure!</h1>
+
+                <form id="auth-form">
+                    <div class="form-fields">
+                        <div id="signup-fields">
+                            <div class="input-group">
+                                 <input type="text" id="username" name="username" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="password" name="password" placeholder="Password" required>
+                        </div>
+                        <div id="signup-fields">
+                             <div class="input-group">
+                                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <button type="submit" class="form-button">Login</button>
+                    </div>
+                </form>
+                
+                <div class="toggle-form">
+                    <span id="signup-toggle">Don't have an account? <a id="show-signup">Sign Up</a></span>
+                    <span id="login-toggle">Already have an account? <a id="show-login">Login</a></span>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+     <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modalTitle">Message</h2>
+            <p id="modalDescription"></p>
+        </div>
+    </div>
+    
+    <script src="theme-loader.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const formWrapper = document.getElementById('form-wrapper');
+            const showSignupBtn = document.getElementById('show-signup');
+            const showLoginBtn = document.getElementById('show-login');
+            const formButton = document.querySelector('.form-button');
+            const authForm = document.getElementById('auth-form');
+
+            const modal = document.getElementById('infoModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const closeButton = document.querySelector('.close-button');
+
+            function showModal(title, text) {
+                modalTitle.textContent = title;
+                modalDescription.textContent = text;
+                modal.style.display = 'flex';
+            }
+            function hideModal() {
+                modal.style.display = 'none';
+            }
+            closeButton.addEventListener('click', hideModal);
+            window.addEventListener('click', (e) => { if(e.target === modal) hideModal(); });
+
+            function setFormMode(isSignup) {
+                 if (isSignup) {
+                    formWrapper.classList.remove('login-mode');
+                    formWrapper.classList.add('signup-mode');
+                    formButton.textContent = 'Sign Up';
+                    document.getElementById('username').required = true;
+                    document.getElementById('confirm-password').required = true;
+                } else {
+                    formWrapper.classList.add('login-mode');
+                    formWrapper.classList.remove('signup-mode');
+                    formButton.textContent = 'Login';
+                    document.getElementById('username').required = false;
+                    document.getElementById('confirm-password').required = false;
+                }
+            }
+
+            showSignupBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                setFormMode(true);
+            });
+
+            showLoginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                setFormMode(false);
+            });
+
+            authForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const isSignup = formWrapper.classList.contains('signup-mode');
+                const endpoint = isSignup ? '/api/signup' : '/api/login';
+                
+                const formData = new FormData(authForm);
+                const data = Object.fromEntries(formData.entries());
+
+                if (isSignup && data.password !== data['confirm-password']) {
+                    showModal('Error', 'Passwords do not match. Please try again.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        showModal('Success!', result.message);
+                        if (!isSignup) {
+                            // Save token and redirect for login
+                            localStorage.setItem('authToken', result.token);
+                            localStorage.setItem('username', result.user.username);
+                            setTimeout(() => {
+                                window.location.href = '/index.html'; // Redirect to home page
+                            }, 1500);
+                        } else {
+                             // Switch to login form after successful signup
+                             setFormMode(false);
+                        }
+                    } else {
+                        showModal('Error', result.message);
+                    }
+
+                } catch (error) {
+                    showModal('Error', 'Could not connect to the server.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

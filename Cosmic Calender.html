@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Calendar - Planetarium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Bangers&display=swap"
+        rel="stylesheet">
+        <link rel="icon" href="Planetarium.png">
+    <style>
+        :root {
+            --theme-color: #8e44ad;
+            --theme-glow: rgba(142, 68, 173, 0.5);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            background-color: #000;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto-format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: rgba(18, 18, 30, 0.7);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .logo {
+            font-size: 2.2em;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--theme-color), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            transition: background 0.5s ease;
+        }
+
+        .login-signup {
+            color: #fff;
+            text-decoration: none;
+            background-color: rgba(83, 83, 83, 0.5);
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding-bottom: 5px;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--theme-color);
+            transition: width 0.3s ease-out, background-color 0.5s ease;
+        }
+
+        nav ul li a:hover {
+            color: #fff;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        main {
+            padding-top: 150px;
+            padding-bottom: 40px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5em;
+            text-align: center;
+            color: var(--theme-color);
+            text-shadow: 2px 2px 0 #000;
+            margin-bottom: 40px;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .events-column h2 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #d8b4fe;
+            border-bottom: 2px solid var(--theme-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .event-card {
+            background-color: rgba(18, 18, 30, 0.85);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px var(--theme-glow);
+        }
+
+        .event-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--theme-color);
+        }
+
+        .event-details h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2em;
+            color: white;
+        }
+
+        .event-details .date {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .event-details p {
+            margin: 0;
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: #ddd;
+        }
+
+        footer {
+            width: 100%;
+            background: rgba(18, 18, 30, 0.7);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 30px;
+            margin-top: 40px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-column h3 {
+            margin-top: 0;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        .footer-column a {
+            color: #bbb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="header-top">
+                <img src="Planetarium.png" alt="Planetarium Logo" width=100>
+                <h1 class="logo">Planetarium</h1>
+                <a href="Login.html" class="login-signup">Login/Sign up</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="clarissa-comic.html">Clarissa</a></li>
+                    <li><a href="Our Solar System.html" target="_break">Our Solar System</a></li>
+                    <li><a href="our-night-sky.html">Our Night Sky</a></li>
+                    <li><a href="Space weather.html">Space Weather</a></li>
+                    <li><a href="Cosmic Calender.html">Cosmic Calendar</a></li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a href="settings.html">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-container">
+            <h1 class="page-title">Cosmic Calendar</h1>
+            <div class="events-grid">
+                <div class="events-column">
+                    <h2>Recent Highlights</h2>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Artemis IV Launch</h3>
+                            <div class="date">September 2025</div>
+                            <p>NASA's mighty SLS rocket launched the Artemis IV crew on their way to the Gateway lunar
+                                space station!</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v4h-2zm0 6h2v2h-2z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Total Lunar Eclipse</h3>
+                            <div class="date">September 7, 2025</div>
+                            <p>A "Blood Moon" was visible across Europe, Africa, and the Americas as the Earth cast its
+                                shadow perfectly over the Moon.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Saturn at Opposition</h3>
+                            <div class="date">September 8, 2025</div>
+                            <p>The ringed planet was at its closest and brightest for the year, offering amazing views
+                                of its rings and moons through a telescope.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M21.5,13.5L19,12L21.5,10.5L18,13V11L22,9L18,7V5L21.5,8.5L19,7L21.5,5.5L17.5,9.5V2L15,4.5L12.5,2V9.5L5,2L7.5,5.5L5,7L9,5V7L5,9L9,11V13L5,10.5L7.5,14L5,15.5L9,12V22H11V17H13V22H15V12L21.5,13.5Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Orionid Meteor Shower</h3>
+                            <div class="date">October 21-22, 2025</div>
+                            <p>Skywatchers enjoyed the peak of the Orionids, another spectacular shower caused by the
+                                debris from Halley's Comet.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12.01,2C9.13,2 6.8,3.92 6.2,6.5L2.8,4.72L1.74,6.5L4.5,8.71C4.19,9.73 4,10.84 4,12C4,16.42 7.58,20 12,20C16.42,20 20,16.42 20,12C20,10.84 19.81,9.73 19.5,8.71L22.26,6.5L21.2,4.72L17.8,6.5C17.2,3.92 14.87,2 12.01,2M12,4C14.07,4 15.77,5.54 16,7.5H8C8.23,5.54 9.93,4 12,4Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>James Webb Discovery</h3>
+                            <div class="date">August 2025</div>
+                            <p>The James Webb Space Telescope captured an amazing image of a distant galaxy, revealing
+                                details about the early universe.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.5 16.5L6 13l1.41-1.41L9.5 13.67 16.09 7.08 17.5 8.5 9.5 16.5z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Eta Aquariid Meteor Shower</h3>
+                            <div class="date">May 6, 2025</div>
+                            <p>Earth passed through the dusty trail of Halley's Comet, creating a beautiful meteor
+                                shower for early risers.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Comet Tsuchinshan–ATLAS</h3>
+                            <div class="date">October 2024</div>
+                            <p>A "great comet" candidate that was visible to the naked eye, delighting stargazers in the
+                                Northern Hemisphere.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="events-column">
+                    <h2>Upcoming Sky Shows</h2>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Jupiter at Opposition</h3>
+                            <div class="date">December 10, 2025</div>
+                            <p>Jupiter will be at its biggest and brightest! Its four largest moons should be visible
+                                with a good pair of binoculars.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M13,9.5H11V6.5H13M13,17.5H11V10.5H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Geminid Meteor Shower</h3>
+                            <div class="date">Peak: Dec 13-14, 2025</div>
+                            <p>Get ready for a dazzling show! The Geminids are known for being bright and plentiful.
+                                Find a dark spot and look up!</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M21.5,13.5L19,12L21.5,10.5L18,13V11L22,9L18,7V5L21.5,8.5L19,7L21.5,5.5L17.5,9.5V2L15,4.5L12.5,2V9.5L5,2L7.5,5.5L5,7L9,5V7L5,9L9,11V13L5,10.5L7.5,14L5,15.5L9,12V22H11V17H13V22H15V12L21.5,13.5Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Ursid Meteor Shower</h3>
+                            <div class="date">December 21-22, 2025</div>
+                            <p>A smaller shower, but a great opportunity to see some "winter meteors" in the night sky
+                                near the North Star.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M22,12A10,10 0 0,0 12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12M16,13H13V16H11V13H8V11H11V8H13V11H16V13Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Quadrantid Meteor Shower</h3>
+                            <div class="date">Jan 3-4, 2026</div>
+                            <p>One of the best meteor showers of the year, known for producing bright fireballs, though
+                                the peak is very short.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12,2C17.52,2 22,6.48 22,12C22,17.52 17.52,22 12,22C6.48,22 2,17.52 2,12C2,6.48 6.48,2 12,2M12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20C16.42,20 20,16.42 20,12C20,7.58 16.42,4 12,4M12,12.5A1.5,1.5 0 0,0 10.5,14A1.5,1.5 0 0,0 12,15.5A1.5,1.5 0 0,0 13.5,14A1.5,1.5 0 0,0 12,12.5Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Annular Solar Eclipse</h3>
+                            <div class="date">Feb 17, 2026</div>
+                            <p>A "Ring of Fire" eclipse will be visible from Antarctica. Watch the amazing live stream
+                                with us!</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8-8-3.59-8-8z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Partial Lunar Eclipse</h3>
+                            <div class="date">March 3, 2026</div>
+                            <p>A portion of the Moon will pass through Earth's shadow, causing the Moon to dim and turn
+                                a coppery red color.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M21.5,13.5L19,12L21.5,10.5L18,13V11L22,9L18,7V5L21.5,8.5L19,7L21.5,5.5L17.5,9.5V2L15,4.5L12.5,2V9.5L5,2L7.5,5.5L5,7L9,5V7L5,9L9,11V13L5,10.5L7.5,14L5,15.5L9,12V22H11V17H13V22H15V12L21.5,13.5Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Lyrid Meteor Shower</h3>
+                            <div class="date">April 22-23, 2026</div>
+                            <p>The Lyrids are known for their fast, bright meteors and can occasionally produce
+                                surprising outbursts of activity.</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-icon"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+                            </svg></div>
+                        <div class="event-details">
+                            <h3>Total Solar Eclipse</h3>
+                            <div class="date">August 12, 2026</div>
+                            <p>A major event! This will be the first total solar eclipse visible from Europe in over 25
+                                years. Don't miss it!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Connect with Us</h3><a href="mailto:contact@planetarium.space">contact@planetarium.space</a><a
+                    href="#">Address</a><br><a href="#" target="_blank">Starship Twitter</a><a href="#"
+                    target="_blank">Cosmos Instagram</a>
+            </div>
+            <div class="footer-column">
+                <h3>Solar Magzines</h3>
+                <p style="font-size: 0.9em; color: #ccc; margin: 0 0 10px;">Get the latest cosmic updates delivered to
+                    your inbox!</p><input type="text" placeholder="Enter your name"><input type="email"
+                    placeholder="Enter your e-mail address"><button class="subscribe-button">Subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="theme-loader.js"></script>
+</body>
+
+</html>
