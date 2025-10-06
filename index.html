@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planetarium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Bangers&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="Planetarium.png">
+    <style>
+        :root {
+            --theme-color: #8e44ad;
+            --theme-glow: rgba(142, 68, 173, 0.5);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            background-color: #000;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        /* Shared Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            background: rgba(18, 18, 30, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .logo {
+            font-size: 2.2em;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--theme-color), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            transition: background 0.5s ease;
+        }
+
+        .login-signup {
+            color: #fff;
+            text-decoration: none;
+            background-color: rgba(83, 83, 83, 0.5);
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .login-signup:hover {
+            background-color: rgba(100, 100, 100, 0.7);
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding-bottom: 5px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--theme-color);
+            transition: width 0.3s ease-out, background-color 0.5s ease;
+        }
+
+        nav ul li a:hover {
+            color: #fff;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        footer {
+            width: 100%;
+            background: rgba(18, 18, 30, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 30px;
+            margin-top: 40px;
+         }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-column h3 {
+            margin-top: 0;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        .footer-column a {
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        .footer-column a:hover {
+            text-decoration: underline;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            color: #e0e0e0;
+            box-sizing: border-box;
+        }
+
+        .subscribe-button {
+            padding: 10px;
+            margin-top: 5px;
+            background-color: var(--theme-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.5s ease;
+        }
+
+        .subscribe-button:hover {
+            filter: brightness(1.2);
+        }
+
+        main {
+            padding-top: 150px;
+                padding-bottom: 40px;
+            }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 30px;
+        }
+
+        .left-column {
+            flex: 2;
+        }
+
+        .right-column {
+            flex: 1;
+        }
+
+        .intro-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            background-color: rgba(30, 30, 30, 0.8);
+            box-shadow: 0 0 15px var(--theme-glow);
+            transition: border-color 0.5s, box-shadow 0.5s;
+        }
+
+        .avatar-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .avatar-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--theme-color);
+            box-shadow: 0 0 15px var(--theme-color);
+            transition: transform 0.3s ease, border-color 0.5s, box-shadow 0.5s;
+        }
+
+        .avatar-container:hover .avatar-img {
+            transform: scale(1.05);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle-anim 0.8s ease-out;
+        }
+
+        @keyframes sparkle-anim {
+            0% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        .creative-intro h2 {
+            margin-top: 0;
+            font-size: 1.8em;
+            color: #fff;
+        }
+
+        .creative-intro p {
+            font-size: 1.1em;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .galaxy-news {
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .galaxy-news h2 {
+            margin-top: 0;
+            color: #c48ef1;
+        }
+
+        .galaxy-news ul {
+            list-style-type: '• ';
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+
+        .fact-section {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #factDisplay {
+            min-height: 60px;
+            font-style: italic;
+            color: #d8b4fe;
+            margin-bottom: 15px;
+        }
+
+        .fact-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--theme-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .fact-button:hover {
+            filter: brightness(1.2);
+            transform: scale(1.02);
+        }
+
+        /* --- FINAL ROBUST INTERACTION SECTION --- */
+        .interaction-section {
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .interaction-section h2 {
+            color: #c48ef1;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-family: 'Bangers', cursive;
+            font-size: 2em;
+            letter-spacing: 1px;
+        }
+
+        .grid-container+h2 {
+            margin-top: 40px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .grid-item {
+            position: relative;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.5em;
+            font-family: 'Bangers', cursive;
+            min-height: 150px;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .grid-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: inherit;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            transition: transform 0.4s ease-out;
+        }
+
+        .grid-item:hover::after {
+            transform: scale(1.1);
+        }
+
+        .grid-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            z-index: 2;
+        }
+
+        .grid-item-title {
+            position: relative;
+            z-index: 3;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+            transition: color 0.3s ease;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.03);
+        }
+
+        .grid-item:hover .grid-item-title {
+            color: var(--theme-color);
+        }
+
+        #clarissa-tile {
+            background-image: url('Clarissa.png')
+        }
+
+        #numbers-tile {
+            background-image: url('https://images.unsplash.com/photo-1509718443690-d8e2fb3474b7?q=80&w=2070&auto=format&fit=crop');
+        }
+
+        #solar-system-tile {
+            background-image: url('Solar System.jpg')
+        }
+
+        #night-sky-tile {
+            background-image: url('https://images.unsplash.com/photo-1536746283543-32a2c5287323?q=80&w=2070&auto=format&fit=crop');
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border: 1px solid var(--theme-color);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 20px var(--theme-glow);
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .header-top {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="header-top">
+                <img src="Planetarium.png" alt="Planetarium Logo" width=100>
+                <h1 class="logo">Planetarium</h1>
+                <a href="Login.html" class="login-signup">Login/Sign up</a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="clarissa-comic.html">Clarissa</a></li>
+                    <li><a href="Our Solar System.html" target="_break">Our Solar System</a></li>
+                    <li><a href="Space weather.html">Space Weather</a></li>
+                    <li><a href="Cosmic Calender.html">Cosmic Calendar</a></li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a href="settings.html">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-container">
+            <section class="main-content">
+                <!-- Left Column -->
+                <div class="left-column">
+                    <article class="intro-section">
+                        <div class="avatar-container">
+                            <img src="Amayra.png"   width=10
+                                class="avatar-img">
+                        </div>
+                        <div class="creative-intro">
+                            <h2>Hi, I'm Amayra!✨</h2>
+                            <p>"Greetings, Star Explorer! Ready to unravel the secrets of the cosmos with me?"</p>
+                        </div>
+                    </article>
+
+                    <section class="interaction-section">
+                        <h2>What are you learning today??   </h2>
+                        <div class="grid-container">
+                            <a href="#""    > <div id="clarissa-tile" class="grid-item" data-title="Clarissa"
+                                    data-text="This section will be all about Clarissa's adventures through space!">
+                                    <span class="grid-item-title">Clarissa</span>
+                                </div>
+                            </a>
+                            <a  href="Cosmic Calender.html"  > <div id="numbers-tile" class="grid-item" data-title="Numbers"
+                                    data-text="Discover the amazing numbers of our universe, from planet sizes to star counts!">
+                                    <span class="grid-item-title">Cosmic Calendar</span>
+                                </div>
+                            </a>
+                            <a href="Space weather.html">   <div  id=" Weather forecast" data-title="Space Weather Forecast"  class="grid-item"
+                                    data-text="Explore interactive models of all the planets in our solar system right here!">
+                                    <span class="grid-item-title">Space Weather Forecast    </span>
+                                </div>
+                            </a>
+                            <a  href="Our Solar System.html" > <div id="solar-system-tile" class="grid-item" data-title="Our Solar System"
+                                    data-text="Explore interactive models of all the planets in our solar system right here!">
+                                    <span class="grid-item-title">Our Solar System</span>
+                                </div>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column: Galaxy News -->
+                <div class="right-column">
+                    <aside class="galaxy-news">
+                        <h2>Welcome to Galaxy News</h2>
+                        <ul>
+                            <li>Solar Magzine is a monthly e-magzine for space lover. It contains untold space stories, quizes, puzzles, and a lot of fun. It is available every month in pdf, and epub format.</li>
+                            <li>Join clary and lisa as they explore the sun and it's effect on earth, only on Clarissa).</li>
+                            <li>Explore the tiny sparkling balls you see at the night sky, with Sid abernath, Only on Vesper.(Coming Soon).</li>
+                        </ul>
+                        <div class="fact-section">
+                            <p id="factDisplay">Click the button for a fun space fact!</p>
+                            <button id="newFactBtn" class="fact-button">Generate a Fun Fact!</button>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Connect with Us</h3>
+                <a href="mailto:contact@planetarium.space">contact@planetarium.space</a>
+                <a href="#">Address</a>
+                <br>
+                <a href="#" target="_blank">Starship Twitter</a>
+                <a href="#" target="_blank">Cosmos Instagram</a>
+            </div>
+            <div class="footer-column">
+                <h3>Solar Magzines</h3>
+                <p style="font-size: 0.9em; color: #ccc; margin: 0 0 10px;">Get the latest cosmic updates delivered to
+                    your inbox!</p>
+                <input type="text" placeholder="Enter your name">
+                <input type="email" placeholder="Enter your e-mail address">
+                <button class="subscribe-button">Subscribe</button>
+            </div>
+        </div>
+    </footer>
+
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalText"></p>
+        </div>
+    </div>
+
+    <script src="theme-loader.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const avatarContainer = document.querySelector('.avatar-container');
+            if (avatarContainer) {
+                avatarContainer.addEventListener('mouseenter', () => {
+                    for (let i = 0; i < 5; i++) {
+                        const sparkle = document.createElement('div');
+                        sparkle.className = 'sparkle';
+                        sparkle.style.top = `${Math.random() * 100}%`;
+                        sparkle.style.left = `${Math.random() * 100}%`;
+                        sparkle.style.animationDelay = `${Math.random() * 0.5}s`;
+                        avatarContainer.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 800);
+                    }
+                });
+            }
+
+            const spaceFacts = [
+                "A day on Venus is longer than a year on Venus.",
+                "There are more trees on Earth than stars in the Milky Way.",
+                "The sunset on Mars appears blue.",
+                "Space is completely silent."
+            ];
+            const factDisplay = document.getElementById('factDisplay');
+            const newFactBtn = document.getElementById('newFactBtn');
+
+            if (newFactBtn) {
+                newFactBtn.addEventListener('click', () => {
+                    const randomIndex = Math.floor(Math.random() * spaceFacts.length);
+                    factDisplay.textContent = spaceFacts[randomIndex];
+                });
+            }
+
+            const modal = document.getElementById('infoModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalText = document.getElementById('modalText');
+            const closeButton = document.querySelector('.close-button');
+            const gridItems = document.querySelectorAll('.grid-item');
+
+            function showModal(title, text) {
+                if (!modal) return;
+                modalTitle.textContent = title;
+                modalText.textContent = text;
+                modal.style.display = 'flex';
+            }
+
+            function hideModal() {
+                if (modal) modal.style.display = 'none';
+            }
+
+            gridItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const title = item.getAttribute('data-title');
+                    const text = item.getAttribute('data-text');
+                    showModal(title, text);
+                });
+            });
+
+            if (closeButton) closeButton.addEventListener('click', hideModal);
+            window.addEventListener('click', (event) => {
+                if (event.target == modal) {
+                    hideModal();
+                }
+            });
+
+            const subscribeButton = document.querySelector('.subscribe-button');
+            if (subscribeButton) {
+                subscribeButton.addEventListener('click', () => {
+                    showModal("Thank You!", "You have successfully subscribed to the Galaxy News newsletter.");
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
